@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlParent"
+    tools:context="com.example.mykhailo.cameratest2.MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.mykhailo.cameratest2.PreviewCamera
+            android:id="@+id/cameraPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_FT"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/llButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rlSquare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:padding="12dp"
+            android:background="@drawable/indicator_background">
+
+            <ImageView
+                android:id="@+id/ivSquare"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_square" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlNav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="12dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/indicator_background">
+
+            <ImageView
+                android:id="@+id/ivNav"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_nav" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlCam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:padding="12dp"
+            android:background="@drawable/indicator_background">
+
+            <ImageView
+                android:id="@+id/ivCam"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_cam" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
