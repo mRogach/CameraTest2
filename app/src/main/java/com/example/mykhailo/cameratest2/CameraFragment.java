@@ -67,7 +67,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener {
                 changeCamera();
                 break;
             case R.id.ivTakePhoto_FC:
-                mainActivity.getCameraPreview().takePhoto();
+                mainActivity.getCameraPreview().onClickStartRecord();
                 break;
         }
     }

@@ -27,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout rlNav, rlSquare, rlCam, rlParent;
     private ImageView ivNav, ivSquare, ivCam;
     private LinearLayout llButtons;
-    private int width, height;
+    private int width, height, displayWidth;
     private int mCurrentSelectedScreen;
     private float oldPositionOffset;
-    private float fifty, thirty;
+    private float fifty, mWidth, twenty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +51,55 @@ public class MainActivity extends AppCompatActivity {
         width = ivCam.getLayoutParams().width;
         height = ivCam.getLayoutParams().height;
         mCurrentSelectedScreen = pager.getCurrentItem();
+        displayWidth = getResources().getDisplayMetrics().widthPixels;
         fifty = dipToPixels(this, 25);
-        thirty = dipToPixels(this, 18);
+        twenty = dipToPixels(this, 20);
+//        mWidth = dipToPixels(this, 62);
+        mWidth = displayWidth/2 - twenty - (width*3);
         if (mCurrentSelectedScreen == 1) {
             ivNav.getLayoutParams().width = (int) (width + (fifty * (1 - oldPositionOffset)));
             ivNav.getLayoutParams().height = (int) (height + (fifty * (1 - oldPositionOffset)));
             ivNav.requestLayout();
         }
+
+        ivCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivCam.getLayoutParams().width = (int) (width + (fifty * (1 - oldPositionOffset)));
+                ivCam.getLayoutParams().height = (int) (height + (fifty * (1 - oldPositionOffset)));
+                llButtons.setTranslationX((-mWidth));
+                pager.setCurrentItem(2);
+            }
+        });
+
+        ivNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCurrentSelectedScreen == 2) {
+                    ivNav.getLayoutParams().width = (int) (width + (fifty * (1 - oldPositionOffset)));
+                    ivNav.getLayoutParams().height = (int) (height + (fifty * (1 - oldPositionOffset)));
+                    llButtons.setTranslationX((-mWidth) * (oldPositionOffset));
+                    pager.setCurrentItem(1);
+                } else {
+                    ivNav.getLayoutParams().width = (int) (width + (fifty * (oldPositionOffset)));
+                    ivNav.getLayoutParams().height = (int) (height + (fifty * (oldPositionOffset)));
+                    llButtons.setTranslationX((mWidth) * (1 - oldPositionOffset));
+                    pager.setCurrentItem(1);
+                }
+            }
+        });
+
+        ivSquare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivSquare.getLayoutParams().width = (int) (width + (fifty * (oldPositionOffset)));
+                ivSquare.getLayoutParams().height = (int) (height + (fifty * (oldPositionOffset)));
+                ivCam.getLayoutParams().width = (int) (width - (fifty * (oldPositionOffset)));
+                ivCam.getLayoutParams().height = (int) (height - (fifty * (oldPositionOffset)));
+                llButtons.setTranslationX((mWidth) * (1 - oldPositionOffset));
+                pager.setCurrentItem(0);
+            }
+        });
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -71,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
                         ivCam.getLayoutParams().height = (int) (height + (fifty * positionOffset));
                         ivNav.getLayoutParams().width = (int) (width + (fifty * (1 - oldPositionOffset)));
                         ivNav.getLayoutParams().height = (int) (height + (fifty * (1 - oldPositionOffset)));
-                        llButtons.setTranslationX((-rlCam.getMeasuredWidth() + thirty) * positionOffset);
-                        Log.v("pager", "TransitionX " + String.valueOf((-rlCam.getMeasuredWidth() + 30) * positionOffset));
+                        llButtons.setTranslationX((-mWidth) * positionOffset);
+                        Log.v("pager", "TransitionX " + String.valueOf((-mWidth) * positionOffset));
                         Log.v("pager", "ivCam Closer to next");
                     } else {
                         if (positionOffset != 0 && oldPositionOffset != 0 && oldPositionOffset > positionOffset) {
@@ -80,8 +122,8 @@ public class MainActivity extends AppCompatActivity {
                             ivCam.getLayoutParams().height = (int) (height + (fifty * (oldPositionOffset)));
                             ivNav.getLayoutParams().width = (int) (width + (fifty * (1 - positionOffset)));
                             ivNav.getLayoutParams().height = (int) (height + (fifty * (1 - positionOffset)));
-                            llButtons.setTranslationX((-rlCam.getMeasuredWidth() + thirty) * (oldPositionOffset));
-                            Log.v("pager", "TransitionX " + String.valueOf((rlCam.getMeasuredWidth() + 30) * positionOffset));
+                            llButtons.setTranslationX((-mWidth) * (oldPositionOffset));
+                            Log.v("pager", "TransitionX " + String.valueOf((mWidth) * oldPositionOffset));
                             Log.v("pager", "ivCam Closer to current");
                         }
                     }
@@ -91,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
                         ivSquare.getLayoutParams().height = (int) (height + (fifty * (1 - positionOffset)));
                         ivNav.getLayoutParams().width = (int) (width + (fifty * positionOffset));
                         ivNav.getLayoutParams().height = (int) (height + (fifty * positionOffset));
-                        llButtons.setTranslationX((rlCam.getMeasuredWidth() + thirty) * (1 - positionOffset));
+                        llButtons.setTranslationX((mWidth) * (1 - positionOffset));
+                        Log.v("pager", "TransitionX " + String.valueOf((mWidth) * (1 - oldPositionOffset)));
                         Log.v("pager", "ivNav");
                     } else {
                         if (oldPositionOffset != 0) {
@@ -99,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
                             ivSquare.getLayoutParams().height = (int) (height + (fifty * (1 - positionOffset)));
                             ivNav.getLayoutParams().width = (int) (width + (fifty * (oldPositionOffset)));
                             ivNav.getLayoutParams().height = (int) (height + (fifty * (oldPositionOffset)));
-                            llButtons.setTranslationX((rlCam.getMeasuredWidth() + thirty) * (1 - positionOffset));
-                            Log.v("pager", "Measure " + String.valueOf(rlSquare.getMeasuredWidth()));
+                            llButtons.setTranslationX((mWidth) * (1 - positionOffset));
+                            Log.v("pager", "TransitionX " + String.valueOf((mWidth) * (1 - oldPositionOffset)));
                             Log.v("pager", "ivSquare");
                         }
                     }
